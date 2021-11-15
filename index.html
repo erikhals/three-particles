@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Exo+2:wght@700&family=Space+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+    <style>
+      body {
+        margin: 0;
+      }
+      .font-exo {
+        font-family: "Exo 2", sans-serif;
+      }
+      .font-mono {
+        font-family: "Space Mono", monospace;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div
+        class="absolute text-white text-center"
+        style="top: 50%; transform: translate(-50%, -50%); left: 50%"
+      >
+        <h1 class="font-mono text-sm uppercase">Erik Hals</h1>
+        <p class="font-exo text-4xl uppercase tracking-wide">Let's simplify</p>
+        <a
+          href="http://erikhals.com"
+          class="
+            border
+            px-4
+            py-2
+            rounded-lg
+            text-sm
+            font-mono
+            uppercase
+            mt-8
+            hover:bg-white hover:text-gray-800
+            inline-block
+          "
+        >
+          View work
+        </a>
+      </div>
+    </div>
+    <script type="module" src="/main.js"></script>
+    <script type="module">
+      import gsap from "gsap";
+
+      const h1 = document.querySelector("h1");
+      const p = document.querySelector("p");
+      const tl = gsap.timeline();
+
+      tl.to("h1", {
+        duration: 2,
+        clipPath: "polygon(0 0, 100% 0, 100% 100%, 0% 100%)",
+        y: "30px",
+      });
+      tl.to("p", {
+        duration: 2,
+        clipPath: "polygon(0 0, 100% 0, 100% 100%, 0% 100%)",
+        y: "30px",
+        delay: -2,
+      });
+      tl.to("a", {
+        duration: 2,
+        opacity: 1,
+        y: "30px",
+      });
+    </script>
+  </body>
+</html>
