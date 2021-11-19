@@ -22,6 +22,7 @@ gui.add(world.plane, "heightSegments", 1, 100).onChange(generatePlane); */
 const loader = new THREE.TextureLoader();
 const cross = loader.load("/cross.png");
 
+// Generate Plane
 function generatePlane() {
   planeMesh.geometry.dispose();
   planeMesh.geometry = new THREE.PlaneGeometry(
@@ -59,14 +60,22 @@ function generatePlane() {
   );
 }
 
+// Ray Caster
 const raycaster = new THREE.Raycaster();
+
+// Scene
 const scene = new THREE.Scene();
+
+// Camera
 const camera = new THREE.PerspectiveCamera(
   75,
   innerWidth / innerHeight,
   0.1,
   1000
 );
+camera.position.z = 50;
+
+// Renderer
 const renderer = new THREE.WebGLRenderer();
 
 renderer.setSize(innerWidth, innerHeight);
@@ -74,29 +83,34 @@ renderer.setSize(innerWidth, innerHeight);
 renderer.setPixelRatio(devicePixelRatio);
 document.body.appendChild(renderer.domElement);
 
+// Orbit controls
 new OrbitControls(camera, renderer.domElement);
 
-camera.position.z = 50;
-
+// Objects
 const planeGeometry = new THREE.PlaneGeometry(
   world.plane.width,
   world.plane.height,
   world.plane.widthSegments,
   world.plane.heightSegments
 );
+const particlesGeometry = new THREE.BufferGeometry();
+
+// Materials
 const planeMaterial = new THREE.MeshPhongMaterial({
   side: THREE.DoubleSide,
   flatShading: THREE.FlatShading,
   vertexColors: true,
 });
 
-const planeMesh = new THREE.Mesh(planeGeometry, planeMaterial);
-scene.add(planeMesh);
-generatePlane();
+const particlesMaterial = new THREE.PointsMaterial({
+  size: 0.1,
+  map: cross,
+  transparent: true,
+  blending: THREE.AdditiveBlending,
+});
 
-const particlesGeometry = new THREE.BufferGeometry();
+// Modifiers
 const particlesCnt = 5000;
-
 const posArray = new Float32Array(particlesCnt * 3);
 
 for (let i = 0; i < particlesCnt * 3; i++) {
@@ -108,17 +122,15 @@ particlesGeometry.setAttribute(
   new THREE.BufferAttribute(posArray, 3)
 );
 
-const particlesMaterial = new THREE.PointsMaterial({
-  size: 0.1,
-  map: cross,
-  transparent: true,
-  blending: THREE.AdditiveBlending,
-});
+// Mesh
+const planeMesh = new THREE.Mesh(planeGeometry, planeMaterial);
+scene.add(planeMesh);
+generatePlane();
 
 const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-
 scene.add(particlesMesh);
 
+// Lights
 const light = new THREE.DirectionalLight(0xffffff, 1);
 light.position.set(0, 1, 1);
 scene.add(light);
@@ -127,6 +139,7 @@ const backLight = new THREE.DirectionalLight(0xffffff, 1);
 backLight.position.set(0, 0, -1);
 scene.add(backLight);
 
+// Mouse
 const mouse = {
   x: undefined,
   y: undefined,
@@ -214,6 +227,7 @@ function animate() {
 
 animate();
 
+// Event Listeners
 addEventListener("mousemove", (event) => {
   mouse.x = (event.clientX / innerWidth) * 2 - 1;
   mouse.y = (event.clientY / innerHeight) * -2 + 1;
